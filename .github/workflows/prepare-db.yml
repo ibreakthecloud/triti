@@ -39,8 +39,8 @@ jobs:
       - name: Download tivvydb and convert to grype db
         run: |
           mkdir assets
-          touch assets/vulnerability.db
-          touch assets/metadata.json
+          echo "vuln" > assets/vulnerability.db
+          echo "meta" > assets/metadata.json
           tar -czvf assets.tar.gz assets
           #echo "pushing tarball to github release"
           # curl -X POST -H "Authorization: token ${{ secrets.TOKEN }}" -H "Content-Type: application/json" --data '{"tag_name": "$dirname"}' https://api.github.com/repos/ibreakthecloud/triti/releases
