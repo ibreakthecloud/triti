@@ -50,7 +50,7 @@ jobs:
           ls
           dirname=threatintel-vuln-$(date +%s%N | cut -b1-13)
           mkdir $dirname
-          mv trivy.db $dirname/
+          mv vulnerability.db $dirname/
           mv metadata.json $dirname/
           tar -czvf $dirname.tar.gz $dirname
           echo "pushing tarball to github release"
