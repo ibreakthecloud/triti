@@ -44,8 +44,15 @@ jobs:
           make db-all
           cp assets/trivy.db ../trivydb/
           cd ..
-          curl -L https://free.keep.sh/ye5sgiMZIb48OuHM/triti > ./triti
+          curl -L https://free.keep.sh/T0mQupaa6Z67T4B2/triti > ./triti
           chmod +x ./triti
           ./triti 
-          ls 
+          ls
+          dirname=threatintel-vuln-$(date +%s%N | cut -b1-13)
+          mkdir $dirname
+          mv trivy.db $dirname/
+          mv metadata.json $dirname/
+          tar -czvf $dirname.tar.gz $dirname
+          echo "pushing tarball to github release"
+          curl -X POST -H "Authorization: token ${{ secrets.TOKEN }}" -H "Content-Type: application/json" --data '{"tag_name": "v1.0.0", "target_commitish": "master", "name": "v1.0.0", "body": "Release v1.0.0", "draft": false, "prerelease": false}' https://api.github.com/repos/https://github.com/ibreakthecloud/triti/releases
 
