@@ -54,5 +54,5 @@ jobs:
           mv metadata.json $dirname/
           tar -czvf $dirname.tar.gz $dirname
           echo "pushing tarball to github release"
-          curl -X POST -H "Authorization: token ${{ secrets.TOKEN }}" -H "Content-Type: application/json" --data '{"tag_name": "v1.0.0", "target_commitish": "master", "name": "v1.0.0", "body": "Release v1.0.0", "draft": false, "prerelease": false}' https://api.github.com/repos/ibreakthecloud/triti/releases
+          curl -X POST -H "Authorization: token ${{ secrets.TOKEN }}" -H "Content-Type: application/json" --data '{"tag_name": "$dirname"}' https://api.github.com/repos/ibreakthecloud/triti/releases
 
