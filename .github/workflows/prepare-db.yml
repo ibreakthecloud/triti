@@ -1,3 +1,6 @@
+
+- name: Upload files to a GitHub release
+  uses: svenstaro/upload-release-action@2.2.1
 name: "Vulnerability DB migration"
 on:
   schedule:
@@ -49,10 +52,21 @@ jobs:
           ./triti 
           ls
           dirname=threatintel-vuln-$(date +%s%N | cut -b1-13)
-          mkdir $dirname
-          mv vulnerability.db $dirname/
-          mv metadata.json $dirname/
-          tar -czvf $dirname.tar.gz $dirname
-          echo "pushing tarball to github release"
-          curl -X POST -H "Authorization: token ${{ secrets.TOKEN }}" -H "Content-Type: application/json" --data '{"tag_name": "$dirname"}' https://api.github.com/repos/ibreakthecloud/triti/releases
+          mkdir assets
+          mv vulnerability.db assets
+          mv metadata.json assets
+          #tar -czvf $dirname.tar.gz $dirname
+          #echo "pushing tarball to github release"
+          # curl -X POST -H "Authorization: token ${{ secrets.TOKEN }}" -H "Content-Type: application/json" --data '{"tag_name": "$dirname"}' https://api.github.com/repos/ibreakthecloud/triti/releases
+
+      - name: Upload files to a GitHub release
+        uses: svenstaro/upload-release-action@2.2.1
+        with:
+          repo_token: ${{ secrets.TOKEN }}
+          file: assets/
+          asset_name: vuln-db
+          tag: vuln-db-tag
+          overwrite: true
+          body: "This is my release text"
+
 
