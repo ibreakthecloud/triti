@@ -65,5 +65,4 @@ jobs:
           tag: vuln-db-tag
           overwrite: true
           body: "This is my release text"
-
-
+          file_glob: true
