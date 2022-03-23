@@ -52,7 +52,7 @@ jobs:
           mkdir assets
           mv vulnerability.db assets
           mv metadata.json assets
-          #tar -czvf $dirname.tar.gz $dirname
+          tar -czvf $assets.tar.gz assets
           #echo "pushing tarball to github release"
           # curl -X POST -H "Authorization: token ${{ secrets.TOKEN }}" -H "Content-Type: application/json" --data '{"tag_name": "$dirname"}' https://api.github.com/repos/ibreakthecloud/triti/releases
 
@@ -60,9 +60,8 @@ jobs:
         uses: svenstaro/upload-release-action@2.2.1
         with:
           repo_token: ${{ secrets.TOKEN }}
-          file: assets/
+          file: assets.tar.gz
           asset_name: vuln-db
           tag: vuln-db-tag
           overwrite: true
           body: "This is my release text"
-          file_glob: true
