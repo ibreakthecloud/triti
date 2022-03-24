@@ -62,3 +62,21 @@ jobs:
           tag_name: test
           files: |
             assets.tar.gz
+
+      - name: Commit and push changes
+        run: |
+          git clone https://github.com/ibreakthecloud/triti.git
+          cd triti
+          git config --global user.name "Harshvardhan Karn"
+          git config --global user.email "harshvardhan@deepfence.io"
+          echo "commit-id" > listing.json
+          git add -A
+          git commit -m "Auto-update listing $DATE"
+          CHANGE=`git diff origin/master | wc -l`
+          if [ $CHANGE -ne 0 ]; then
+          git push
+          else
+          echo "No changes to commit"
+          fi
+          exit 0
+
