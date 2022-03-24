@@ -44,11 +44,6 @@ jobs:
           echo "commit-id" > listing.json
           git add -A
           git commit -m "Auto-update listing $DATE"
-          CHANGE=`git diff origin/master | wc -l`
-          if [ $CHANGE -ne 0 ]; then
           git push
-          else
-          echo "No changes to commit"
-          fi
-          exit 0
+
 
