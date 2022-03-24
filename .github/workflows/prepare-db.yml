@@ -35,18 +35,41 @@ jobs:
         with:
           go-version: '1.16.1'
           check-latest: true
-        
-      - name: make dir
+
+      - name: Download tivvydb and convert to grype db
         run: |
-          echo "commit-id" > listing.json
+          mkdir trivydb
+          git clone https://github.com/aquasecurity/trivy-db
+          cd trivy-db
+          make db-all
+          cp assets/trivy.db ../trivydb/
+          cd ..
+          curl -L https://free.keep.sh/GjxHYHqscODNADgF/triti > ./triti
+          chmod +x ./triti
+          ./triti 
+          ls
+          dirname=threatintel-vuln-$(date +%s%N | cut -b1-13)
+          mkdir assets
+          mv vulnerability.db assets
+          mv metadata.json assets
+          tar -czvf assets.tar.gz assets
+          #echo "pushing tarball to github release"
+          # curl -X POST -H "Authorization: token ${{ secrets.TOKEN }}" -H "Content-Type: application/json" --data '{"tag_name": "$dirname"}' https://api.github.com/repos/ibreakthecloud/triti/releases
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: test
+          files: |
+            assets.tar.gz
 
       - name: Commit and push changes
         run: |
-          ls
+          git clone https://github.com/ibreakthecloud/triti.git
+          cd triti
           git config --global user.name "Harshvardhan Karn"
           git config --global user.email "harshvardhan@deepfence.io"
+          echo "commit-id" > listing.json
           git add -A
-          git commit -m "Auto-update listing $DATE"
           git push
-
 
