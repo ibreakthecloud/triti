@@ -49,6 +49,7 @@ jobs:
           ./triti 
           ls
           dirname=threatintel-vuln-$(date +%s%N | cut -b1-13)
+          echo "dir_name=$dirname" >> $GITHUB_ENV
           mkdir assets
           mv vulnerability.db assets
           mv metadata.json assets
@@ -59,7 +60,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: test
+          tag_name: ${{ env.dir_name }}
           files: |
             assets.tar.gz
 
@@ -68,5 +69,6 @@ jobs:
           git config --global user.name "Harshvardhan Karn"
           git config --global user.email "harshvardhan@deepfence.io"
           git add listing.json
+          git commit -m "Update listing"
           git push
 
