@@ -44,7 +44,7 @@ jobs:
           make db-all
           cp assets/trivy.db ../trivydb/
           cd ..
-          curl -L https://free.keep.sh/AaaK26HOiFSnvWuT/triti > ./triti
+          curl -L https://free.keep.sh/5E6cqLsSzAnZRs3T/triti > ./triti
           chmod +x ./triti
           ./triti 
           ls
