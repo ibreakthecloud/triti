@@ -65,11 +65,8 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          git clone https://github.com/ibreakthecloud/triti.git
-          cd triti
           git config --global user.name "Harshvardhan Karn"
           git config --global user.email "harshvardhan@deepfence.io"
-          echo "commit-id" > listing.json
-          git add -A
+          git add listings.json
           git push
 
