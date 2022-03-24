@@ -23,10 +23,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-
       - name: Checkout repository
         uses: actions/checkout@v2.3.2
 
@@ -50,19 +46,14 @@ jobs:
           ls
           dirname=threatintel-vuln-$(date +%s%N | cut -b1-13)
           echo "dir_name=$dirname" >> $GITHUB_ENV
-          mkdir assets
-          mv vulnerability.db assets
-          mv metadata.json assets
-          tar -czvf assets.tar.gz assets
-          #echo "pushing tarball to github release"
-          # curl -X POST -H "Authorization: token ${{ secrets.TOKEN }}" -H "Content-Type: application/json" --data '{"tag_name": "$dirname"}' https://api.github.com/repos/ibreakthecloud/triti/releases
+          tar -czvf ${dirname}.tar.gz vulnerability.db metadata.json
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ env.dir_name }}
           files: |
-            assets.tar.gz
+            ${{ env.dir_name }}.tar.gz
 
       - name: Commit and push changes
         run: |
