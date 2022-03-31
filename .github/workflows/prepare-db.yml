@@ -80,7 +80,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.TOKEN }}
-          directory: ThreatMapper
+          directory: infra-mon
           branch: main
           repository: ibreakthecloud/infra-mon
 
