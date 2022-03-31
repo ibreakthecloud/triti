@@ -70,6 +70,7 @@ jobs:
       - name: Commit changes
         run: |
           cd infra-mon
+          git config --local --unset-all "http.https://github.com/.extraheader"
           git config --global user.name "Harshvardhan Karn"
           git config --global user.email "harshvardhan@deepfence.io"
           echo "hello from the other side" >> test
