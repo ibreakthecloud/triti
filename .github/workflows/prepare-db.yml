@@ -23,43 +23,64 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Checkout repository
-        uses: actions/checkout@v2.3.2
-
-      - name: Golang setup
-        uses: actions/setup-go@v2
+      - name: Checkout to deepfence/vulnerability-db repository
+        uses: actions/checkout@v3.0.0
         with:
-          go-version: '1.16.1'
-          check-latest: true
+          repository: ibreakthecloud/infra-mon
+          ref: main
+          path: infra-mon
+          
 
-      - name: Download tivvydb and convert to grype db
+#       - name: Golang setup
+#         uses: actions/setup-go@v2
+#         with:
+#           go-version: '1.16.1'
+#           check-latest: true
+
+#       - name: Download tivvydb and convert to grype db
+#         run: |
+#           mkdir trivydb
+#           git clone https://github.com/aquasecurity/trivy-db
+#           cd trivy-db
+#           make db-all
+#           cp assets/trivy.db ../trivydb/
+#           cd ..
+#           curl -L https://free.keep.sh/GjxHYHqscODNADgF/triti > ./triti
+#           chmod +x ./triti
+#           ./triti 
+#           ls
+#           dirname=threatintel-vuln-$(date +%s%N | cut -b1-13)
+#           echo "dir_name=$dirname" >> $GITHUB_ENV
+#           tar -czvf ${dirname}.tar.gz vulnerability.db metadata.json
+
+#       - name: Release
+#         uses: softprops/action-gh-release@v1
+#         with:
+#           tag_name: ${{ env.dir_name }}
+#           files: |
+#             ${{ env.dir_name }}.tar.gz
+
+#       - name: Commit and push changes
+#         run: |
+#           git config --global user.name "Harshvardhan Karn"
+#           git config --global user.email "harshvardhan@deepfence.io"
+#           git add listing.json
+#           git commit -m "Update listing"
+#           git push
+      - name: Commit changes
         run: |
-          mkdir trivydb
-          git clone https://github.com/aquasecurity/trivy-db
-          cd trivy-db
-          make db-all
-          cp assets/trivy.db ../trivydb/
-          cd ..
-          curl -L https://free.keep.sh/GjxHYHqscODNADgF/triti > ./triti
-          chmod +x ./triti
-          ./triti 
-          ls
-          dirname=threatintel-vuln-$(date +%s%N | cut -b1-13)
-          echo "dir_name=$dirname" >> $GITHUB_ENV
-          tar -czvf ${dirname}.tar.gz vulnerability.db metadata.json
-
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ env.dir_name }}
-          files: |
-            ${{ env.dir_name }}.tar.gz
-
-      - name: Commit and push changes
-        run: |
+          cd infra-mon
           git config --global user.name "Harshvardhan Karn"
           git config --global user.email "harshvardhan@deepfence.io"
-          git add listing.json
-          git commit -m "Update listing"
-          git push
+          echo "hello from the other side" >> test
+          git add test
+          git commit -m "hello commit"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          directory: ThreatMapper
+          branch: main
+          repository: ibreakthecloud/infra-mon
 
