@@ -1,0 +1,28 @@
+name: "Delete old threatintel releases"
+on:
+  # schedule:
+  # - cron: "0 0 * * *"
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'     
+        required: true
+        default: 'info' 
+        type: choice
+        options:
+        - info
+        - warning
+        - debug 
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete old threatintel releases
+        uses: dev-drprasad/delete-older-releases@v0.2.0
+        with:
+          repo: ibreakthecloud/triti
+          keep_latest: 2
+          delete_tag_pattern: threatintel-vuln
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
