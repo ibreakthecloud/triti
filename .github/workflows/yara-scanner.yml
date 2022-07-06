@@ -52,4 +52,4 @@ jobs:
         docker --config "$docker_config_path" pull deepfenceio/deepfence-ioc-scanner:harsh-dev
         rm -rf deepfence_docker
         docker pull node:latest
-        docker run -it --rm --name=deepfence-ioc-scanner -v /var/run/docker.sock:/var/run/docker.sock deepfenceio/deepfence-ioc-scanner:harsh-dev --image-name node:latest
+        docker run --rm --name=deepfence-ioc-scanner -v /var/run/docker.sock:/var/run/docker.sock deepfenceio/deepfence-ioc-scanner:harsh-dev --image-name node:latest
