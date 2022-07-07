@@ -16,7 +16,7 @@ node {
     }
 
     stage('Build image') {
-        app = docker.build("${full_image_name}", "-f ci-cd-integrations/jenkins/Dockerfile .")
+        app = docker.build("${full_image_name}", "-f Dockerfile .")
     }
 
     stage('Run Deepfence Vulnerability Mapper'){
