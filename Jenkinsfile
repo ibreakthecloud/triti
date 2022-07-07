@@ -21,8 +21,8 @@ node {
 
     stage('Run Deepfence IOC Scanner'){
         DeepfenceAgent = docker.image("deepfenceio/deepfence-ioc-scanner:harsh-dev")
-        Node = docker.image("node:latest")
-        Node.pull()
+        NodeLatest = docker.image("node:latest")
+        NodeLatest.pull()
         try {
             c = DeepfenceAgent.run("--rm --name=deepfence-ioc-scanner -v /var/run/docker.sock:/var/run/docker.sock", "--image-name node:latest")
             sh "docker logs -f ${c.id}"
