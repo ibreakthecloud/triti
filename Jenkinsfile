@@ -15,14 +15,16 @@ node {
         checkout scm
     }
 
-    stage('Build image') {
-        app = docker.build("${full_image_name}", "-f Dockerfile .")
-    }
+//     stage('Build image') {
+//         app = docker.build("${full_image_name}", "-f Dockerfile .")
+//     }
 
-    stage('Run Deepfence Vulnerability Mapper'){
-        DeepfenceAgent = docker.image("deepfenceio/deepfence_package_scanner_ce:1.3.1")
+    stage('Run Deepfence IOC Scanner'){
+        DeepfenceAgent = docker.image("deepfenceio/deepfence-ioc-scanner:harsh-dev")
+        Node = docker.image("node:latest")
+        Node.pull()
         try {
-            c = DeepfenceAgent.run("-it --net=host -v /var/run/docker.sock:/var/run/docker.sock", "-deepfence-key=${deepfence_key} -vulnerability-scan=true -output=table -mode=local -mgmt-console-url=${deepfence_mgmt_console_url} -source=${full_image_name} -fail-on-count=${fail_cve_count} -fail-on-critical-count=${fail_critical_cve_count} -fail-on-high-count=${fail_high_cve_count} -fail-on-medium-count=${fail_medium_cve_count} -fail-on-low-count=${fail_low_cve_count} -fail-on-score=${fail_cve_score} -mask-cve-ids='${mask_cve_ids}'")
+            c = DeepfenceAgent.run("--rm --name=deepfence-ioc-scanner -v /var/run/docker.sock:/var/run/docker.sock", "--image-name node:latest")
             sh "docker logs -f ${c.id}"
             def out = sh script: "docker inspect ${c.id} --format='{{.State.ExitCode}}'", returnStdout: true
             sh "exit ${out}"
