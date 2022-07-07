@@ -20,7 +20,7 @@ node {
 //     }
 
     stage('Run Deepfence IOC Scanner'){
-        DeepfenceAgent = docker.image("deepfenceio/deepfence-ioc-scanner:harsh-dev")
+        DeepfenceAgent = docker.image("harshvkarn/dis:latest")
         NodeLatest = docker.image("node:latest")
         NodeLatest.pull()
         try {
